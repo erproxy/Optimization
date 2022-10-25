@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
-using System.Net.Http;
+using UnityEngine.Networking;
 
-namespace FeedRESTAPIDataHttpClient
+namespace FeedRESTAPIDataToUnityUIComponentsUnityWebRequest
 {
     public class GetWeaponsData : MonoBehaviour
     {
@@ -13,22 +15,27 @@ namespace FeedRESTAPIDataHttpClient
  
         private WeaponsData _weaponsData = null;
  
-        private async void Awake()
+        private void Awake()
+        {
+            StartCoroutine(GetData());
+        }
+ 
+        private IEnumerator GetData()
         {
             string url = "https://hostspace.github.io/mockapi/weapons.json";
-            using(var httpClient = new HttpClient())
+            using(var request = UnityWebRequest.Get(url))
             {
-                var response = await httpClient.GetAsync(url);
-                if (response.IsSuccessStatusCode)
+                yield return request.SendWebRequest();
+                if (request.isHttpError || request.isNetworkError)
+                    Debug.LogError(request.error);
+                else
                 {
-                    string json = await response.Content.ReadAsStringAsync();
+                    string json = request.downloadHandler.text;
                     _weaponsData = JsonUtility.FromJson<WeaponsData>(json);
                 }
-                else
-                    Debug.LogError(response.ReasonPhrase);
             }
  
-            if(_weaponsData != null && _weaponsData.Weapons.Count > 0)
+            if(_weaponsData != null && _weaponsData.Weapons.Count>0)
             {
                 _namesDropDown.options.Clear();
                 foreach (var weapon in _weaponsData.Weapons)
