@@ -10,7 +10,7 @@ namespace SaveLoadDataSecurelyUsingBinaryFormatter
     { 
         [SerializeField] private InputField _nameInputField;
         [SerializeField] private Slider _ageSlider;
-        [SerializeField] private  Dropdown _classDropdown;
+        [SerializeField] private Dropdown _classDropdown;
  
         private string _filePath = String.Empty;
  
