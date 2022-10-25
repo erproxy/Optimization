@@ -3,7 +3,7 @@ using System.Net.Http;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GetPost_REST_API_Data_using_HttpClient
+namespace GetPostRESTAPIDataUsingHttpClient
 {
     public class PostMethod : MonoBehaviour
     {
